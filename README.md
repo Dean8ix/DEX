@@ -1,7 +1,7 @@
 
-# AvalToken
+# DEX
 
-This Solidity program is a simple ERC-20 smart contract that allows the owner to mint tokens for users, while users can transfer tokens between themselves and also burn their owned tokens.
+This Solidity program is a simple Decentralized Exchange smart contract that allows the owner to mint tokens for users, while users can transfer tokens between themselves and also burn their owned tokens.
 
 ## Description
 
@@ -26,35 +26,33 @@ Once you are on the Remix website, create a new file by clicking on the "+" icon
 
 ```javascript
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+contract DEX {
 
-contract AvalToken is ERC20, Ownable {
+    mapping (address => uint256) balances;
 
+    function exchange() external payable {
 
-    constructor(string memory tokenName, string memory tokenSymbol)
-        ERC20(tokenName, tokenSymbol)
-        Ownable(msg.sender)
-    {}
+        assert(msg.value > 0);
+        uint amount = msg.value * 5;
 
-    function transfer(address to, uint256 value)
-        public
-        override
-        returns (bool)
-    {
-        address owner = _msgSender();
-        _transfer(owner, to, value);
-        return true;
+        balances[msg.sender] += amount;
+
     }
 
-    function mintToken(address account, uint256 amount) public onlyOwner {
-        _mint(account, amount);
+    function withdraw(uint256 amount) external {
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+        balances[msg.sender] -= amount;
     }
 
-    function burnToken(uint96 amount) external {
-        _burn(msg.sender, amount);
+
+    function getBalanceOf(address owner) public view returns (uint256) {
+        uint bal = balances[owner];
+
+        if (bal == 0) revert ("You do not have balance");
+
+        return bal;
     }
 }
 ```
