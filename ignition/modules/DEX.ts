@@ -1,12 +1,10 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-
-const DEX = buildModule("DEX", (m) => {
-
+const DEXModule = buildModule("DEXModule", (m) => {
 
   const dex = m.contract("DEX");
 
   return { dex };
 });
 
-export default DEX;
+export default DEXModule;
