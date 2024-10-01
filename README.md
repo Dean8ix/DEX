@@ -25,7 +25,6 @@ Once you are on the Remix website, create a new file by clicking on the "+" icon
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import {VenturaErrors} from "./VenturaErrors.sol";
 
 contract Airdrop is ERC1155 {
 
